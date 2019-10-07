@@ -11,6 +11,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import prombot.controllers.MainController;
+import prombot.controllers.RootController;
 import prombot.controllers.SearchService;
 import prombot.util.JaxBWriter;
 
@@ -55,7 +56,8 @@ public class MainApp extends Application {
             Scene scene = new Scene(rootPage);
             primaryStage.setScene(scene);
 
-            /*TODO controller*/
+            RootController controller = loader.getController();
+            controller.setMainApp(this);
             primaryStage.show();
 
         } catch (IOException e) {
@@ -150,25 +152,5 @@ public class MainApp extends Application {
         }
     }
 
-    public void showBirthdayStatistics() {
-        try {
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(MainApp.class.getResource("/view/birthdayStatistic.fxml"));
-            AnchorPane anchorPane = (AnchorPane) loader.load();
-            Stage dialogStage = new Stage();
-            dialogStage.setTitle("Birthday Statistic");
-            dialogStage.initModality(Modality.WINDOW_MODAL);
-            dialogStage.initOwner(primaryStage);
-            Scene scene = new Scene(anchorPane);
-            dialogStage.setScene(scene);
-
-
-            dialogStage.show();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-
-        }
-    }
 }
 

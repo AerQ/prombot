@@ -1,7 +1,6 @@
 package prombot.controllers;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
 import javafx.stage.FileChooser;
 import prombot.MainApp;
 

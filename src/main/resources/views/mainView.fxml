@@ -44,7 +44,7 @@
                               </TextField>
                               <TextArea fx:id="productDescriptionArea" editable="false" layoutX="15.0" layoutY="134.0" prefHeight="171.0" prefWidth="670.0" style="-fx-background-color: #6e6b6a;" wrapText="true">
                                  <tooltip>
-                                    <Tooltip fx:id="tooltipArea" text="п=После поиска здесь выведеться информация по товару" />
+                                    <Tooltip fx:id="tooltipArea" text="После поиска здесь выведеться информация по товару" />
                                  </tooltip></TextArea>
                               <Button fx:id="clearReferenceField" layoutX="15.0" layoutY="58.0" mnemonicParsing="false" onAction="#handleClearSearchInput" prefHeight="30.0" prefWidth="83.0" style="-fx-background-color: #000;" text="Очистить" textFill="WHITE" />
                               <Button fx:id="copyReferenceField" layoutX="113.0" layoutY="58.0" mnemonicParsing="false" onAction="#handleCopySearchInput" prefHeight="30.0" prefWidth="83.0" style="-fx-background-color: #000;" text="Копировать" textFill="WHITE" />
