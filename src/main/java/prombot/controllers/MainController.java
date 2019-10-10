@@ -5,22 +5,34 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
 import prombot.MainApp;
-import prombot.util.ProductParser;
+import prombot.model.AddBacket;
+import prombot.model.PersonRegistration;
+import prombot.model.Product;
+import prombot.util.SearchService;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class MainController {
 
     @FXML
-    private TextField VendorCodeField;
+    private TextField vendorCodeField;
 
     @FXML
     private TextArea productDescriptionArea;
 
     @FXML
+    private Button clearReferenceField2;
+
+    @FXML
     private Button searchButton;
+
+    @FXML
+    private Button clearReferenceField1;
 
     @FXML
     private TextField yourEmailField;
@@ -44,7 +56,7 @@ public class MainController {
     private Tooltip tooltipRef;
 
     @FXML
-    private PasswordField yourPasswordField;
+    private TextField yourPasswordField;
 
     @FXML
     private Button registerButton;
@@ -67,84 +79,120 @@ public class MainController {
     @FXML
     private TextField loginField;
 
-
+    private WebDriver driver;
     private MainApp mainApp;
     private boolean isClicked = false;
     private SearchService searchService;
-    private ProductParser productParser;
     private Stage dialogStage;
+    private final static String chromeProperties = "C:/Users/Остап/IdeaProjects/Selenium/drivers/chromedriver.exe";
+    private final static String MAIN_URL = "https://prom.ua/";
+    private final static String REG_URL = "https://prom.ua/join-customer?source_id=txt.register.customer";
+    private PersonRegistration personRegistration;
+
+    public MainController() {
+    }
+
     @FXML
     void initialize() {
         searchService = new SearchService();
+
     }
+
     @FXML
     private void handleSearchButtonClick() throws IOException {
-        if (isInputValid()){
-            List<ProductParser> x = search(putReferenceField.getText());
+        if (isInputValid()) {
+            List<Product> x = search(putReferenceField.getText());
             productDescriptionArea.setText(String.valueOf(x));
+            vendorCodeField.setText(putReferenceField.getText());
 
-            isClicked=true;
+            isClicked = true;
         }
     }
-    private boolean isInputValid(){
-        String errorMessage ="";
-        if (putReferenceField.getText() ==null || putReferenceField.getText().length() ==0){
-                errorMessage+="Не правильно введённая строка";
+
+    private boolean isInputValid() {
+        String errorMessage = "";
+        if (putReferenceField.getText() == null || putReferenceField.getText().length() == 0) {
+            errorMessage += "Не правильно введённая строка";
         }
-        if (errorMessage.length()==0){
+        if (errorMessage.length() == 0) {
             return true;
-        }else {
-            Alert alert =new Alert(Alert.AlertType.ERROR);
+        } else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.initOwner(dialogStage);
             alert.setTitle("Не правильно ввёденная ссылка");
             alert.setHeaderText("Пожалуйста исправте текст ссылки на такой \n https://prom.ua/p30215758-nabor-zhenskih-nosovyh.html");
             alert.setContentText(errorMessage);
             alert.showAndWait();
             return false;
-         }
+        }
+    }
+
+    @FXML
+    private void handleButtonSubmit() {
+        selen();
+        firstLoad();
+        loginField.setText(yourNameField.getText());
+    }
+    public PersonRegistration firstLoad() {
+        PersonRegistration promFirstPage = new PersonRegistration(driver);
+        promFirstPage.register(yourNameField.getText(), yourEmailField.getText(), yourPasswordField.getText());
+
+        promFirstPage.regButton();
+        return new PersonRegistration(driver);
     }
     @FXML
-    private void handleClearSearchInput(){
-                putReferenceField.clear();
-                putReferenceField.getOnMouseMoved();
+    private void handleAddToBacket() throws IOException {
+        if (isInputValid()) {
+            List<Product> x = search(vendorCodeField.getText());
+            productDescriptionArea.setText(String.valueOf(x));
+
+            AddBacket addBacket = new AddBacket(driver);
+            driver.get(putReferenceField.getText());
+            addBacket.getButtonClick();
+        }
     }
-    @FXML
-    private void handleCopySearchInput(){
-        putReferenceField.copy();
+    private void selen() {
+        System.setProperty("webdriver.chrome.driver", chromeProperties);
+        driver = new ChromeDriver();
+        driver.get(MAIN_URL);
+        driver.get(REG_URL);
     }
-    @FXML
-    private void handlePasteSearchInput(){
-        putReferenceField.paste();
-    }
-    @FXML
-    private void handleClearProductArea(){
-        productDescriptionArea.clear();
-    }
-    @FXML
-    private void handleCopyProductArea(){
-        productDescriptionArea.copy();
-    }
-    @FXML
-    private void handlePasteProductArea(){
-        productDescriptionArea.paste();
-    }
-    private List<ProductParser> search (String url) throws IOException {
+
+    private List<Product> search(String url) throws IOException {
         SearchService searchService = new SearchService();
         return searchService.marshall(url);
     }
-//    private String splitProductInfo(ProductParser holder) throws IOException {
-//        StringBuilder builder = new StringBuilder();
-//
-//
-//        builder.append("Title: " + holder.getName() + "\n");
-//        builder.append("Title: " + holder.getPrice() + "\n");
-//        builder.append("Title: " + holder.getAvailability() + "\n");
-//        builder.append("Title: " + holder.getColor() + "\n");
-//        builder.append("Title: " + holder.getDescription() + "\n");
-//
-//       return builder.toString();
-//
-//    }
+
+    @FXML
+    private void handleClearSearchInput() {
+        putReferenceField.clear();
+        putReferenceField.getOnMouseMoved();
+    }
+
+    @FXML
+    private void handleCopySearchInput() {
+        putReferenceField.copy();
+    }
+
+    @FXML
+    private void handlePasteSearchInput() {
+        putReferenceField.paste();
+    }
+
+    @FXML
+    private void handleClearProductArea() {
+        productDescriptionArea.clear();
+    }
+
+    @FXML
+    private void handleCopyProductArea() {
+        productDescriptionArea.copy();
+    }
+
+    @FXML
+    private void handlePasteProductArea() {
+        productDescriptionArea.paste();
+    }
 
     public void setMainApp(MainApp mainApp) {
         this.mainApp = mainApp;

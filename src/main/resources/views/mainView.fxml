@@ -63,22 +63,22 @@
                <content>
                   <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #4a211e;">
                      <children>
-                        <TextField fx:id="yourNameField" layoutX="27.0" layoutY="65.0" prefHeight="25.0" prefWidth="356.0" promptText="Как вас зовут?" style="-fx-background-color: #e7e1f5;" AnchorPane.rightAnchor="317.0">
+                        <TextField fx:id="yourNameField" layoutX="42.0" layoutY="67.0" prefHeight="25.0" prefWidth="356.0" promptText="Как вас зовут?" style="-fx-background-color: #e7e1f5;" AnchorPane.rightAnchor="302.0">
                            <font>
                               <Font size="14.0" />
                            </font>
                         </TextField>
-                        <TextField fx:id="yourEmailField" layoutX="27.0" layoutY="125.0" prefHeight="25.0" prefWidth="356.0" promptText="Введите Email" style="-fx-background-color: #e7e1f5;" AnchorPane.leftAnchor="27.0" AnchorPane.topAnchor="125.0">
+                        <TextField fx:id="yourEmailField" layoutX="42.0" layoutY="120.0" prefHeight="25.0" prefWidth="356.0" promptText="Введите Email" style="-fx-background-color: #e7e1f5;" AnchorPane.leftAnchor="42.0" AnchorPane.topAnchor="120.0">
                            <font>
                               <Font size="14.0" />
                            </font>
                         </TextField>
-                        <PasswordField fx:id="yourPasswordField" layoutX="27.0" layoutY="186.0" prefHeight="25.0" prefWidth="357.0" promptText="Придумайте пароль" style="-fx-background-color: #e7e1f5;">
+                        <TextField fx:id="yourPasswordField" layoutX="42.0" layoutY="171.0" prefHeight="25.0" prefWidth="356.0" promptText="Введите пароль" style="-fx-background-color: #e7e1f5;">
                            <font>
                               <Font size="14.0" />
                            </font>
-                        </PasswordField>
-                        <Button fx:id="registerButton" layoutX="106.0" layoutY="272.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="200.0" style="-fx-background-color: #000;" text="Зарегестрироваться" textFill="WHITE">
+                        </TextField>
+                        <Button fx:id="registerButton" layoutX="471.0" layoutY="116.0" mnemonicParsing="false" onAction="#handleButtonSubmit" prefHeight="25.0" prefWidth="200.0" style="-fx-background-color: #000;" text="Зарегестрироваться" textFill="WHITE">
                            <font>
                               <Font size="18.0" />
                            </font>
@@ -94,14 +94,14 @@
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: #3b1d36;">
                      <children>
-                        <TextArea fx:id="backetValue" layoutX="14.0" layoutY="114.0" prefHeight="201.0" prefWidth="671.0" />
-                        <Button fx:id="addToBacketButton" layoutX="399.0" layoutY="39.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="222.0" style="-fx-background-color: #000;" text="Добавить товар в корзину" textFill="WHITE">
+                        <TextField fx:id="loginField" layoutX="14.0" layoutY="22.0" prefHeight="32.0" prefWidth="378.0" promptText="Введите логин " />
+                        <TextField fx:id="vendorCodeField" layoutX="14.0" layoutY="69.0" prefHeight="32.0" prefWidth="378.0" promptText="Введите артикул товара" />
+                        <Button fx:id="addToBacketButton" onAction="#handleAddToBacket" layoutX="399.0" layoutY="39.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="222.0" style="-fx-background-color: #000;" text="Добавить товар в корзину" textFill="WHITE">
                            <effect>
                               <DropShadow color="#944343" height="115.88" radius="92.22" width="255.0" />
                            </effect>
                         </Button>
-                        <TextField fx:id="loginField" layoutX="14.0" layoutY="22.0" prefHeight="32.0" prefWidth="378.0" promptText="Введите логин " />
-                        <TextField fx:id="VendorCodeField" layoutX="14.0" layoutY="69.0" prefHeight="32.0" prefWidth="378.0" promptText="Введите артикул товара" />
+                        <TextArea fx:id="backetValue" layoutX="14.0" layoutY="114.0" prefHeight="201.0" prefWidth="671.0" />
                      </children>
                   </AnchorPane>
               </content>

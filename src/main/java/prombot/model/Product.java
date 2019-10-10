@@ -1,32 +1,37 @@
-package prombot.util;
+package prombot.model;
 
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
-
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.List;
 
+@XmlRootElement(name = "products")
+public class Product {
+    private String name;
+    private String price;
+    private String availability;
+    private String color;
+    private String description;
+    private String vendorCode;
+    private List<Product> products;
 
-public class ProductParser  {
-    private StringProperty name;
-    private StringProperty price;
-    private StringProperty availability;
-    private StringProperty color;
-    private StringProperty description;
-    private List<StringProperty> products;
-
-    public ProductParser(){
-        this(null,null,null,null,null);
+    public Product(String vendorCode) {
+        this.vendorCode = vendorCode;
     }
 
-    public ProductParser(String name, String price, String availability, String color, String description) {
-        this.name = new SimpleStringProperty(name);
-        this.price = new SimpleStringProperty(price);
-        this.availability = new SimpleStringProperty(availability);
-        this.color = new SimpleStringProperty(color);
-        this.description = new SimpleStringProperty(description);
+    public Product(){
+        this(null,null,null,null,null,null);
     }
 
-//    public ProductParser()  {
+    public Product(String name, String price, String availability, String color, String description,String vendorCode) {
+        this.name = name;
+        this.price =price ;
+        this.availability = availability;
+        this.color = color;
+        this.description =description;
+        this.vendorCode=vendorCode;
+    }
+
+//    public Product()  {
 //      name = new SimpleStringProperty(name);
 //        price = new SimpleStringProperty(getPrice());
 //        availability = new SimpleStringProperty(getAvailability());
@@ -75,81 +80,74 @@ public class ProductParser  {
 //    }
 
     public String getName() {
-        return name.get();
-    }
-
-    public String getPrice() {
-        return price.get();
-    }
-
-    public String getAvailability() {
-        return availability.get();
-    }
-
-    public String getColor() {
-        return color.get();
-    }
-
-    public String getDescription() {
-        return description.get();
-    }
-
-    public StringProperty nameProperty() {
         return name;
     }
 
     public void setName(String name) {
-        this.name.set(name);
+        this.name = name;
     }
 
-    public StringProperty priceProperty() {
+    public String getPrice() {
         return price;
     }
 
     public void setPrice(String price) {
-        this.price.set(price);
+        this.price = price;
     }
 
-    public StringProperty availabilityProperty() {
+    public String getAvailability() {
         return availability;
     }
 
     public void setAvailability(String availability) {
-        this.availability.set(availability);
+        this.availability = availability;
     }
 
-    public StringProperty colorProperty() {
+    public String getColor() {
         return color;
     }
 
     public void setColor(String color) {
-        this.color.set(color);
+        this.color = color;
     }
 
-    public StringProperty descriptionProperty() {
+    public String getDescription() {
         return description;
     }
 
     public void setDescription(String description) {
-        this.description.set(description);
+        this.description = description;
     }
-
-    public List<StringProperty> getProducts() {
+    @XmlElement(name = "product")
+    public List<Product> getProducts() {
         return products;
     }
 
-    public void setProducts(List<StringProperty> products) {
+    public void setProducts(List<Product> products) {
         this.products = products;
     }
 
+    public String getVendorCode() {
+        return vendorCode;
+    }
+
+    public void setVendorCode(String vendorCode) {
+        this.vendorCode = vendorCode;
+    }
+
+    private static  int count =0;
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder();
+        final StringBuilder sb = new StringBuilder("\n");
+        sb.append("============================================="+"\n");
+        sb.append(count++ +")");
         sb.append(name).append("\n");
         sb.append(price).append("\n");
         sb.append(availability).append("\n");
         sb.append(color).append("\n");
         sb.append(description).append("\n");
+        sb.append(vendorCode).append("\n");
+        sb.append("============================================="+"\n");
         return sb.toString();
     }
 }

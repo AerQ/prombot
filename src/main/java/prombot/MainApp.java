@@ -1,40 +1,42 @@
 package prombot;
 
 import javafx.application.Application;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
 import prombot.controllers.MainController;
 import prombot.controllers.RootController;
-import prombot.controllers.SearchService;
-import prombot.util.JaxBWriter;
+
+import prombot.model.Product;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.prefs.Preferences;
 
 public class MainApp extends Application {
     private Stage primaryStage;
     private BorderPane rootPage;
-    private ObservableList<SearchService>searchProducts= FXCollections.observableArrayList();
-    public MainApp() {
+    private List<Product> searchProducts= new ArrayList<>();
 
+    public MainApp() {
+        searchProducts.add(new Product("","","","","",""));
     }
 
     public Stage getPrimaryStage() {
         return primaryStage;
     }
 
-    public ObservableList<SearchService> getSearchProducts() {
+    public List<Product> getSearchProducts() {
         return searchProducts;
     }
 
@@ -46,7 +48,6 @@ public class MainApp extends Application {
         initializeRoot();
         showMainContent();
     }
-
 
     public void initializeRoot() {
         try {
@@ -75,6 +76,7 @@ public class MainApp extends Application {
 
             MainController controller = loader.getController();
             controller.setMainApp(this);
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -94,25 +96,25 @@ public class MainApp extends Application {
             prefs.put("filePath", file.getPath());
 
             // Update the stage title.
-            primaryStage.setTitle("ProductParser - " + file.getName());
+            primaryStage.setTitle("PromBot - " + file.getName());
         } else {
             prefs.remove("filePath");
 
             // Update the stage title.
-            primaryStage.setTitle("ProductParser");
+            primaryStage.setTitle("PromBot");
         }
     }
     public void loadPersonDataFromFile(File file) {
         try {
             JAXBContext context = JAXBContext
-                    .newInstance(JaxBWriter.class);
+                    .newInstance(Product.class);
             Unmarshaller um = context.createUnmarshaller();
 
             // Чтение XML из файла и демаршализация.
-            JaxBWriter wrapper = (JaxBWriter) um.unmarshal(file);
+            Product wrapper = (Product) um.unmarshal(file);
 
             searchProducts.clear();
-            searchProducts.addAll(wrapper.getPersons());
+            searchProducts.addAll(wrapper.getProducts());
 
             // Сохраняем путь к файлу в реестре.
             setPersonFilePath(file);
@@ -126,16 +128,14 @@ public class MainApp extends Application {
             alert.showAndWait();
         }
     }
-
-
-    public void savePersonDataToFile(File file) {
+    public void savePersonDataToFile( File file) {
         try {
-            JAXBContext context = JAXBContext.newInstance(JaxBWriter.class);
+            JAXBContext context = JAXBContext.newInstance(Product.class);
             Marshaller m = context.createMarshaller();
             m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 
             // Wrapping our person data.
-            JaxBWriter wrapper = new JaxBWriter();
+            Product wrapper = new Product();
             wrapper.setProducts(searchProducts);
 
             m.marshal(wrapper, file);
@@ -151,6 +151,5 @@ public class MainApp extends Application {
 //            e.printStackTrace();
         }
     }
-
 }
 
