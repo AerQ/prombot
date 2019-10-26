@@ -5,10 +5,10 @@ import org.openqa.selenium.WebDriver;
 import java.util.Date;
 import java.util.Random;
 
-public class LoadRandomValueToFirstPage {
+public class CreateRandomValueToRegistrationPage {
     private WebDriver driver;
 
-    public LoadRandomValueToFirstPage(WebDriver driver) {
+    public CreateRandomValueToRegistrationPage(WebDriver driver) {
         this.driver = driver;
     }
 

@@ -1,7 +1,5 @@
 package prombot.controllers;
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
@@ -11,11 +9,10 @@ import prombot.MainApp;
 import prombot.model.AddBacket;
 import prombot.model.PersonRegistration;
 import prombot.model.Product;
-import prombot.util.SearchService;
+import prombot.util.JDBCMySQLConnection;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
+import java.sql.SQLException;
 
 public class MainController {
 
@@ -82,7 +79,6 @@ public class MainController {
     private WebDriver driver;
     private MainApp mainApp;
     private boolean isClicked = false;
-    private SearchService searchService;
     private Stage dialogStage;
     private final static String chromeProperties = "C:/Users/Остап/IdeaProjects/Selenium/drivers/chromedriver.exe";
     private final static String MAIN_URL = "https://prom.ua/";
@@ -94,20 +90,44 @@ public class MainController {
 
     @FXML
     void initialize() {
-        searchService = new SearchService();
 
     }
 
     @FXML
-    private void handleSearchButtonClick() throws IOException {
+    private void handleSearchButtonClick() throws IOException, SQLException, ClassNotFoundException {
         if (isInputValid()) {
-            List<Product> x = search(putReferenceField.getText());
-            productDescriptionArea.setText(String.valueOf(x));
-            vendorCodeField.setText(putReferenceField.getText());
-
+            productDescriptionArea.setText(product(putReferenceField.getText()));
+            vendorCodeField.setText(vendorCode(putReferenceField.getText()));
             isClicked = true;
         }
     }
+    private String vendorCode(String url) throws IOException {
+        Product productos = new Product(url);
+        return productos.getVendorCode(url);
+    }
+
+
+    private String product(String url) throws IOException, SQLException, ClassNotFoundException {
+        StringBuilder sb = new StringBuilder();
+        Product productsss = new Product(url);
+        JDBCMySQLConnection jdbcMySQLConnection = new JDBCMySQLConnection();
+        jdbcMySQLConnection.insertTable(
+                productsss.getTitle(url),
+                productsss.getPrice(url),
+                productsss.getAvailability(url),
+                productsss.getColor(url),
+                productsss.getDescription(url),
+                productsss.getVendorCode(url));
+        sb.append("Название товара=" + " " + productsss.getTitle(url)).append("\n");
+        sb.append("Цена товара=" + " " + productsss.getPrice(url)).append("\n");
+        sb.append("Наличие товара=" + " " + productsss.getAvailability(url)).append("\n");
+        sb.append("Цвет товара=" + " " + productsss.getColor(url)).append("\n");
+        sb.append("Описание товара=" + " " + productsss.getDescription(url)).append("\n");
+        sb.append("Артикул товара=" + " " + productsss.getVendorCode(url)).append("\n");
+        return sb.toString();
+
+    }
+
 
     private boolean isInputValid() {
         String errorMessage = "";
@@ -128,39 +148,43 @@ public class MainController {
     }
 
     @FXML
-    private void handleButtonSubmit() {
-        selen();
-        firstLoad();
+    private void handleButtonSubmit() throws SQLException, ClassNotFoundException {
+        seleniumDriverConnection();
+        personRegistr();
         loginField.setText(yourNameField.getText());
+        JDBCMySQLConnection jdbcMySQLConnection = new JDBCMySQLConnection();
+        jdbcMySQLConnection.insertRegistrValueTable(yourNameField.getText(), yourEmailField.getText(), yourPasswordField.getText());
+
     }
-    public PersonRegistration firstLoad() {
+
+    public PersonRegistration personRegistr() {
         PersonRegistration promFirstPage = new PersonRegistration(driver);
+
         promFirstPage.register(yourNameField.getText(), yourEmailField.getText(), yourPasswordField.getText());
 
         promFirstPage.regButton();
         return new PersonRegistration(driver);
     }
-    @FXML
-    private void handleAddToBacket() throws IOException {
-        if (isInputValid()) {
-            List<Product> x = search(vendorCodeField.getText());
-            productDescriptionArea.setText(String.valueOf(x));
 
+    @FXML
+    private void handleAddToBacket() throws IOException, SQLException, ClassNotFoundException {
+        if (isInputValid()) {
+//            String x = product(vendorCodeField.getText());
+//            productDescriptionArea.setText(String.valueOf(x));
             AddBacket addBacket = new AddBacket(driver);
             driver.get(putReferenceField.getText());
             addBacket.getButtonClick();
+            JDBCMySQLConnection jdbc = new JDBCMySQLConnection();
+            jdbc.insertToProductInfoTable(yourNameField.getText(),
+                    putReferenceField.getText(),vendorCodeField.getText());
         }
     }
-    private void selen() {
+
+    private void seleniumDriverConnection() {
         System.setProperty("webdriver.chrome.driver", chromeProperties);
         driver = new ChromeDriver();
         driver.get(MAIN_URL);
         driver.get(REG_URL);
-    }
-
-    private List<Product> search(String url) throws IOException {
-        SearchService searchService = new SearchService();
-        return searchService.marshall(url);
     }
 
     @FXML

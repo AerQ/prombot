@@ -1,7 +1,10 @@
 package prombot.model;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.io.IOException;
 import java.util.List;
 
 @XmlRootElement(name = "products")
@@ -14,70 +17,48 @@ public class Product {
     private String vendorCode;
     private List<Product> products;
 
-    public Product(String vendorCode) {
-        this.vendorCode = vendorCode;
+    private Document JsoupConnect(String url) throws IOException {
+        Document doc = Jsoup.connect(url).get();
+        return doc;
     }
 
-    public Product(){
-        this(null,null,null,null,null,null);
+    public Product(String url) throws IOException {
+        name = getTitle(url);
+        price = getPrice(url);
+        availability = getAvailability(url);
+        color = getColor(url);
+        description = getDescription(url);
+        vendorCode = getVendorCode(url);
     }
 
-    public Product(String name, String price, String availability, String color, String description,String vendorCode) {
-        this.name = name;
-        this.price =price ;
-        this.availability = availability;
-        this.color = color;
-        this.description =description;
-        this.vendorCode=vendorCode;
+    public String getTitle(String url) throws IOException {
+        String named = JsoupConnect(url).getElementsByAttributeValue("class", "x-page x-product-page").select("h1").text();
+        return named;
     }
 
-//    public Product()  {
-//      name = new SimpleStringProperty(name);
-//        price = new SimpleStringProperty(getPrice());
-//        availability = new SimpleStringProperty(getAvailability());
-//        color = new SimpleStringProperty(getColor());
-//      description = new SimpleStringProperty(getDescription());
-//    }
+    public String getPrice(String url) throws IOException {
+        String price = JsoupConnect(url).getElementsByAttributeValue("class", "x-product-price").get(0).text();
+        return price;
+    }
 
-//    public String getName()  {
-//        for (Element element : doc.getElementsByAttributeValue("class", "x-page x-product-page")) {
-//             String a = element.select("h1").text();
-//            System.out.println(a);
-//        }
-//        return null;
-//    }
-//
-//    public String getPrice() {
-//        for (Element element : doc.getElementsByAttributeValue("class", "x-page x-product-page")) {
-//           String  price = element.getElementsByAttributeValue("class", "x-product-price").get(0).text();
-//            System.out.println(price);
-//        }
-//        return null;
-//    }
-//
-//    public String getAvailability() {
-//        for (Element element : doc.getElementsByAttributeValue("class", "x-page x-product-page")) {
-//           String availability = element.getElementsByClass("x-product-presence").text();
-//            System.out.println(availability);
-//        }
-//        return null;
-//    }
-//
-//    public String  getColor() {
-//        for (Element element : doc.getElementsByAttributeValue("class", "x-page x-product-page")) {
-//           String  color = element.getElementsByClass("x-attributes__value").get(6).text();
-//            System.out.println(color);
-//        }
-//        return null;
-//    }
-//
-//    public String  getDescription() {
-//        for (Element element : doc.getElementsByAttributeValue("class", "x-page x-product-page")) {
-//            String description = element.getElementsByClass("x-user-content").text();
-//            System.out.println(description);
-//        }
-//        return null;
-//    }
+    public String getAvailability(String url) throws IOException {
+        String ava = JsoupConnect(url).getElementsByClass("x-product-presence").text();
+        return ava;
+    }
+
+    public String getColor(String url) throws IOException {
+        String color = JsoupConnect(url).getElementsByClass("x-attributes__value").get(6).text();
+        return color;
+    }
+
+    public String getDescription(String url) throws IOException {
+        String descriptions = JsoupConnect(url).getElementsByClass("x-user-content").text();
+        return descriptions;
+    }
+    public String getVendorCode(String url) throws IOException {
+        String vend = JsoupConnect(url).getElementsByClass("x-product-info__identity-item").select("span").get(1).text();
+        return vend;
+    }
 
     public String getName() {
         return name;
@@ -118,6 +99,7 @@ public class Product {
     public void setDescription(String description) {
         this.description = description;
     }
+
     @XmlElement(name = "product")
     public List<Product> getProducts() {
         return products;
@@ -135,19 +117,20 @@ public class Product {
         this.vendorCode = vendorCode;
     }
 
-    private static  int count =0;
+    private static int count = 0;
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("\n");
-        sb.append("============================================="+"\n");
-        sb.append(count++ +")");
+        sb.append("=============================================" + "\n");
+        sb.append(count++ + ")");
         sb.append(name).append("\n");
         sb.append(price).append("\n");
         sb.append(availability).append("\n");
         sb.append(color).append("\n");
         sb.append(description).append("\n");
         sb.append(vendorCode).append("\n");
-        sb.append("============================================="+"\n");
+        sb.append("=============================================" + "\n");
         return sb.toString();
     }
 }

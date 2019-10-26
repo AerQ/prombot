@@ -28,8 +28,8 @@ public class MainApp extends Application {
     private BorderPane rootPage;
     private List<Product> searchProducts= new ArrayList<>();
 
-    public MainApp() {
-        searchProducts.add(new Product("","","","","",""));
+    public MainApp() throws IOException {
+//        searchProducts.add(new Product());
     }
 
     public Stage getPrimaryStage() {
@@ -41,7 +41,7 @@ public class MainApp extends Application {
     }
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage){
         this.primaryStage = primaryStage;
         this.primaryStage.setTitle("PromBot");
 
@@ -135,10 +135,10 @@ public class MainApp extends Application {
             m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 
             // Wrapping our person data.
-            Product wrapper = new Product();
-            wrapper.setProducts(searchProducts);
-
-            m.marshal(wrapper, file);
+//            Product wrapper = new Product();
+//            wrapper.setProducts(searchProducts);
+//
+//            m.marshal(wrapper, file);
 
             setPersonFilePath(file);
         } catch (Exception e) {

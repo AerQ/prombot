@@ -20,6 +20,37 @@
    <children>
       <TabPane id="ancorpane" prefHeight="400.0" prefWidth="700.0" style="-fx-background-color: #6e6b6a;" styleClass="anchorPane" tabClosingPolicy="UNAVAILABLE" AnchorPane.topAnchor="0.0">
         <tabs>
+          <Tab id="registration" styleClass="registration" text="Registration">
+               <content>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #4a211e;">
+                     <children>
+                        <TextField fx:id="yourNameField" layoutX="42.0" layoutY="67.0" prefHeight="25.0" prefWidth="356.0" promptText="Как вас зовут?" style="-fx-background-color: #e7e1f5;" AnchorPane.rightAnchor="302.0">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </TextField>
+                        <TextField fx:id="yourEmailField" layoutX="42.0" layoutY="120.0" prefHeight="25.0" prefWidth="356.0" promptText="Введите Email" style="-fx-background-color: #e7e1f5;" AnchorPane.leftAnchor="42.0" AnchorPane.topAnchor="120.0">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </TextField>
+                        <TextField fx:id="yourPasswordField" layoutX="42.0" layoutY="171.0" prefHeight="25.0" prefWidth="356.0" promptText="Введите пароль" style="-fx-background-color: #e7e1f5;">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </TextField>
+                        <Button fx:id="registerButton" layoutX="471.0" layoutY="116.0" mnemonicParsing="false" onAction="#handleButtonSubmit" prefHeight="25.0" prefWidth="200.0" style="-fx-background-color: #000;" text="Зарегестрироваться" textFill="WHITE">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                           <effect>
+                              <DropShadow color="#5b2626" height="130.71" radius="95.92750000000001" width="255.0" />
+                           </effect>
+                        </Button>
+                     </children>
+                  </AnchorPane>
+               </content>
+          </Tab>
           <Tab id="searchProduct" styleClass="searchProduct" text="SearchProductByLink">
                <content>
                   <AnchorPane prefHeight="800.0" prefWidth="900.0">
@@ -59,44 +90,13 @@
                   </AnchorPane>
                </content>
           </Tab>
-          <Tab id="registration" styleClass="registration" text="Registration">
-               <content>
-                  <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #4a211e;">
-                     <children>
-                        <TextField fx:id="yourNameField" layoutX="42.0" layoutY="67.0" prefHeight="25.0" prefWidth="356.0" promptText="Как вас зовут?" style="-fx-background-color: #e7e1f5;" AnchorPane.rightAnchor="302.0">
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                        </TextField>
-                        <TextField fx:id="yourEmailField" layoutX="42.0" layoutY="120.0" prefHeight="25.0" prefWidth="356.0" promptText="Введите Email" style="-fx-background-color: #e7e1f5;" AnchorPane.leftAnchor="42.0" AnchorPane.topAnchor="120.0">
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                        </TextField>
-                        <TextField fx:id="yourPasswordField" layoutX="42.0" layoutY="171.0" prefHeight="25.0" prefWidth="356.0" promptText="Введите пароль" style="-fx-background-color: #e7e1f5;">
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                        </TextField>
-                        <Button fx:id="registerButton" layoutX="471.0" layoutY="116.0" mnemonicParsing="false" onAction="#handleButtonSubmit" prefHeight="25.0" prefWidth="200.0" style="-fx-background-color: #000;" text="Зарегестрироваться" textFill="WHITE">
-                           <font>
-                              <Font size="18.0" />
-                           </font>
-                           <effect>
-                              <DropShadow color="#5b2626" height="130.71" radius="95.92750000000001" width="255.0" />
-                           </effect>
-                        </Button>
-                     </children>
-                  </AnchorPane>
-               </content>
-          </Tab>
             <Tab text="AddToBacket">
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: #3b1d36;">
                      <children>
                         <TextField fx:id="loginField" layoutX="14.0" layoutY="22.0" prefHeight="32.0" prefWidth="378.0" promptText="Введите логин " />
                         <TextField fx:id="vendorCodeField" layoutX="14.0" layoutY="69.0" prefHeight="32.0" prefWidth="378.0" promptText="Введите артикул товара" />
-                        <Button fx:id="addToBacketButton" onAction="#handleAddToBacket" layoutX="399.0" layoutY="39.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="222.0" style="-fx-background-color: #000;" text="Добавить товар в корзину" textFill="WHITE">
+                        <Button fx:id="addToBacketButton" layoutX="399.0" layoutY="39.0" mnemonicParsing="false" onAction="#handleAddToBacket" prefHeight="41.0" prefWidth="222.0" style="-fx-background-color: #000;" text="Добавить товар в корзину" textFill="WHITE">
                            <effect>
                               <DropShadow color="#944343" height="115.88" radius="92.22" width="255.0" />
                            </effect>
